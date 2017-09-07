@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>载入中...请稍候</title>
+</head>
+<body>
+	<center>
+		载入中...请稍候
+		<div>
+			<img src="image/waiting.gif" alt="" />
+		</div>
+	</center>
+	<script language="javascript" type="text/javascript">
+		var url = (window.location.href);
+		var i = url.indexOf("?")
+		var s = "http://172.16.11.64:8080/Project/project_temp" + url.substring(i, url.length);
+		// 以下方式直接跳转  
+		window.location.href = s;
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- <include file="struts-default.xml"></include> -->
+	<package name="useraction" extends="struts-default" namespace="/">
+		<action name="project" class="com.hxss.ACTION.project_ACTION"
+			method="project_IMPORT">
+			<result name="success">success.html</result>
+			<result name="error">error.html</result>
+		</action>
+		<action name="project_temp" class="com.hxss.ACTION.Project_temp_Action"
+			method="project_IMPORT">
+			<result name="success">success.html</result>
+			<result name="error">error.html</result>
+		</action>
+	</package>
+</struts>  
