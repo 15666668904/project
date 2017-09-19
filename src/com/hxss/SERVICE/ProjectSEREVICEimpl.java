@@ -534,8 +534,11 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 
 	@Override
 	//主要验证逻辑关系（FS）
-	public String Data_validation(File file)  {
+	public String Data_validation(File file,String plan_version_sid)  {
 		// TODO Auto-generated method stub
+		String result="success";
+		ProjectDAO projectDAO=new ProjectDAOimpl();
+		boolean default_version= projectDAO.getdefault_plan(plan_version_sid);
 		project_importDemo project_importDemo=new project_importDemo();
 		List<Task>tasks=project_importDemo.getprojectfile(file).getAllTasks();
 		for(int i=0;i<tasks.size();i++) {
@@ -545,12 +548,19 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 				for(int j=0;j<relations.size();j++) {
 					Relation relation=relations.get(j);
 					if(!relation.getType().equals(RelationType.FINISH_START)) {
-						return "逻辑关系包含非FS关系";
+						result="逻辑关系包含非FS关系";
 					}
 				}
 			}
 		}
-		return "success";
+		if(!default_version) {
+			if(result.equals("success")) {
+				result="计划执行中<br/>";
+			}else {
+				result="计划执行中<br/>"+result;
+			}
+		}
+		return result;
 	}
 
 	@Override

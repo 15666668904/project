@@ -24,6 +24,6 @@ public interface ProjectSERVICE {
 	public void savePlan_template(File file,String plan_version_sid,String xpmobs_sid);
 	public void savetemp_pro_taskpred(File file,String plan_version_sid);
 	public void Update_project_delivery(File file,String xpmobs_sid);//更新项目交期
-	public String Data_validation(File file); 
+	public String Data_validation(File file,String plan_version_sid); 
 	public void deletepro_obj(String plan_version_sid);
 }

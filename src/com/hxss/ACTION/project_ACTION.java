@@ -81,7 +81,7 @@ public class project_ACTION extends ActionSupport{
 			projectSERVICE.getfile(file_name);
 			String localpath=properties.getProperty("local_path");
 			File file=new File(localpath+"/"+file_name);
-			String Data_validation_results=projectSERVICE.Data_validation(file);
+			String Data_validation_results=projectSERVICE.Data_validation(file,plan_version_sid);
 			if(!Data_validation_results.equals("success")) {
 				ServletActionContext.getRequest()
 				.setAttribute("Data_validation_results", Data_validation_results);
