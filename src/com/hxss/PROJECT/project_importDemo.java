@@ -31,10 +31,11 @@ public class project_importDemo {
 		}
 	}
 	//获取前置任务id
-	private static String getBeforeTaskId(Task task){
+	private static String getBeforeTaskId(Task task) {
 		StringBuffer beforeTaskId = new StringBuffer();
 		if(task!=null){
 			List list = task.getPredecessors();
+
 			if(list != null ){
 				if(list.size()>0){
 					for(int i=0; i<list.size(); i++){
@@ -64,7 +65,7 @@ public class project_importDemo {
 	}
 	//解析project
 	@SuppressWarnings("unchecked")
-	public static List psrseProjectFile(ProjectFile projectFile){
+	public static List psrseProjectFile(ProjectFile projectFile) {
 		List list = new ArrayList();
 		List taskList = projectFile.getAllTasks();
 		for(int i=0;i<taskList.size();i++){

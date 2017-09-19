@@ -32,6 +32,7 @@ public interface ProjectDAO {
 	public String gethuman_sidfromxpm(String human_name);//在xpm_human表内搜索人员sid
 	public void savefk_list(HXSS_FK hxss_FK);//保存齐套清单
 	public void savetask_ready(hxss_task_ready hxss_task_ready );//保存任务准备
+	public void deletepro_obj(String plan_version_sid);//删除任务
 	//以下为公司层模板使用-------------------------------------------------------------------------------
 	public void savePlan_template(Plan_template plan_template);
 	public String gettemp_obj_sid(String task_id,String plan_version_sid);

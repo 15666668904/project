@@ -20,6 +20,9 @@
 		<property name="max_supply" type="java.lang.String">
 			<column name="MAX_SUPPLY" />
 		</property>
+		<property name="RegisterHuman_sid" type="java.lang.String">
+			<column name="REGISTERHUMAN_SID" />
+		</property>
 		<property name="is_active" type="java.lang.String">
 			<column name="IS_ACTIVE" />
 		</property>

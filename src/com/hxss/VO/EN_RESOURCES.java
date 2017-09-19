@@ -17,6 +17,13 @@ public class EN_RESOURCES {
 	private String resource_calendar_sid;
 	private String resource_calendar_code;
 	private String resource_calendar_name;
+	private String RegisterHuman_sid;
+	public String getRegisterHuman_sid() {
+		return RegisterHuman_sid;
+	}
+	public void setRegisterHuman_sid(String registerHuman_sid) {
+		RegisterHuman_sid = registerHuman_sid;
+	}
 	public String getRESOURCES_sid() {
 		return RESOURCES_sid;
 	}

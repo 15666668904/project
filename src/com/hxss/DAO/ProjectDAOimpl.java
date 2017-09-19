@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -322,6 +323,18 @@ public class ProjectDAOimpl implements ProjectDAO {
 		SQLQuery sqlQuery= session.createSQLQuery("update en_project set "
 				+ "pcd='"+project_delivery+"' where proj_sid='"+xpmobs_sid+"'");
 		sqlQuery.executeUpdate();
+		transaction.commit();
+		HibernateUtil.closeSession();
+	}
+
+	@Override
+	public void deletepro_obj(String plan_version_sid) {
+		// TODO Auto-generated method stub
+		Session session=HibernateUtil.getSession();
+		Transaction transaction=session.beginTransaction();
+		Query query=session.createQuery("delete from pro_obj where plan_version_sid=?");
+		query.setString(1, plan_version_sid);
+		query.executeUpdate();
 		transaction.commit();
 		HibernateUtil.closeSession();
 	}

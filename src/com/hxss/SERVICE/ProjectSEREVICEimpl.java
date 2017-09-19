@@ -46,6 +46,8 @@ import com.hxss.VO.pro_taskpred;
 import net.sf.mpxj.ProjectCalendar;
 import net.sf.mpxj.ProjectCalendarException;
 import net.sf.mpxj.ProjectFile;
+import net.sf.mpxj.Relation;
+import net.sf.mpxj.RelationType;
 import net.sf.mpxj.Resource;
 import net.sf.mpxj.ResourceAssignment;
 import net.sf.mpxj.Task;
@@ -57,7 +59,7 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	@Override
-	public void savepro_obj(File file,String plan_version_sid,String dept_sid,String Range) {
+	public void savepro_obj(File file,String plan_version_sid,String dept_sid,String Range)  {
 		// TODO Auto-generated method stub
 		ProjectDAO projectDAO=new ProjectDAOimpl();
 		project_importDemo project_importDemo=new project_importDemo();
@@ -207,6 +209,7 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 			en_RESOURCES.setMax_supply(String.valueOf(resource.getMaxUnits().intValue()/100));
 			en_RESOURCES.setResources_code(resource.getID().toString());
 			en_RESOURCES.setResources_name(resource.getName());
+			en_RESOURCES.setRegisterHuman_sid("Project");//标记project导入的资源以便后续进行处理
 			//避免重复导入
 			if (proj_resources.isEmpty()) {
 				projectDAO.saveEN_RESOURCES(en_RESOURCES);
@@ -527,5 +530,33 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 		ProjectDAO projectDAO=new ProjectDAOimpl();
 		projectDAO.Update_project_delivery(new SimpleDateFormat("yyyy-MM-dd").format(new project_importDemo()
 				.getprojectfile(file).getFinishDate()), xpmobs_sid);
+	}
+
+	@Override
+	//主要验证逻辑关系（FS）
+	public String Data_validation(File file)  {
+		// TODO Auto-generated method stub
+		project_importDemo project_importDemo=new project_importDemo();
+		List<Task>tasks=project_importDemo.getprojectfile(file).getAllTasks();
+		for(int i=0;i<tasks.size();i++) {
+			Task task=tasks.get(i);
+			List<Relation> relations= task.getPredecessors();
+			if(null!=relations) {
+				for(int j=0;j<relations.size();j++) {
+					Relation relation=relations.get(j);
+					if(!relation.getType().equals(RelationType.FINISH_START)) {
+						return "逻辑关系包含非FS关系";
+					}
+				}
+			}
+		}
+		return "success";
+	}
+
+	@Override
+	public void deletepro_obj(String plan_version_sid) {
+		// TODO Auto-generated method stub
+		ProjectDAO projectDAO=new ProjectDAOimpl();
+		projectDAO.deletepro_obj(plan_version_sid);
 	}
 }

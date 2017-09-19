@@ -2,6 +2,9 @@ package com.hxss.ACTION;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
+
+import org.apache.struts2.ServletActionContext;
+
 import com.hxss.SERVICE.ProjectSEREVICEimpl;
 import com.hxss.SERVICE.ProjectSERVICE;
 import com.hxss.UTIL.HibernateUtil;
@@ -15,7 +18,7 @@ public class project_ACTION extends ActionSupport{
 	private String calendar_flag;
 	private String dept_sid;
 	private String Range="1";//联系人搜索范围，默认在本公司查找 2位在xpm_human表内搜索，不分公司
-    private String project_date_flag;
+	private String project_date_flag;
 	public String getProject_date_flag() {
 		return project_date_flag;
 	}
@@ -78,6 +81,13 @@ public class project_ACTION extends ActionSupport{
 			projectSERVICE.getfile(file_name);
 			String localpath=properties.getProperty("local_path");
 			File file=new File(localpath+"/"+file_name);
+			String Data_validation_results=projectSERVICE.Data_validation(file);
+			if(!Data_validation_results.equals("success")) {
+				ServletActionContext.getRequest()
+				.setAttribute("Data_validation_results", Data_validation_results);
+				return "Data_validation_error";
+			}
+			projectSERVICE.deletepro_obj(plan_version_sid);
 			projectSERVICE.savepro_obj(file, plan_version_sid,dept_sid,Range);
 			projectSERVICE.savepro_taskpred(file, plan_version_sid);
 			projectSERVICE.saveEN_RESOURCES(file, xpmobs_sid);

@@ -10,7 +10,7 @@ import com.hxss.VO.pro_taskpred;
 import net.sf.mpxj.ProjectFile;
 import net.sf.mpxj.mspdi.schema.Project;
 public interface ProjectSERVICE {
-	public void savepro_obj(File file,String plan_version_sid,String dept_sid,String Range);//插入任务
+	public void savepro_obj (File file,String plan_version_sid,String dept_sid,String Range);//插入任务
 	public void savepro_taskpred(File file,String plan_version_sid);//插入逻辑关系
 	public void savehxss_task_resources(File file,String plan_version_sid,String xpmobs_sid);//插入资源分配
 	public void saveEN_RESOURCES(File file,String xpmobs_sid);//插入资源
@@ -24,4 +24,6 @@ public interface ProjectSERVICE {
 	public void savePlan_template(File file,String plan_version_sid,String xpmobs_sid);
 	public void savetemp_pro_taskpred(File file,String plan_version_sid);
 	public void Update_project_delivery(File file,String xpmobs_sid);//更新项目交期
+	public String Data_validation(File file); 
+	public void deletepro_obj(String plan_version_sid);
 }

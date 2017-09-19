@@ -28,7 +28,6 @@ public class readFile{
 		}
 		String localpath=properties.getProperty("local_path");
 		File file=new File(localpath+"/"+file_name);
-		System.out.println(localpath+"/"+file_name);
 		if(file.exists()&&file.isFile()){
 			file.delete();
 		}
@@ -83,13 +82,13 @@ public class readFile{
 			System.out.println("读取ftp配置文件出错");
 			e1.printStackTrace();
 		}
+		System.out.println("下载文件"+file_name);
 		String username=properties.getProperty("ftp_user");//ftp用户名
 		String password=properties.getProperty("ftp_password");//ftp密码
 		String server=properties.getProperty("ftp_server");//ftp的ip地址
 		String filename=file_name;//下载的文件名(测试写死，到时传参)
 		String path=properties.getProperty("work_path");//存储目录(路径问题有坑,不能有中文)
 		String localpath=properties.getProperty("local_path");//本地存储目录
-		System.out.println(localpath);
 		FTPClient ftpClient=new FTPClient();
 		try {
 			int reply;
@@ -107,7 +106,7 @@ public class readFile{
 				byte[] bytes=file.getName().getBytes("iso-8859-1");
 				String string=new String(bytes,"utf-8");
 				if(string.equals(filename)){
-					//6.写操作，将其写入到本地文件中  
+					//6.写操作，将其写入到本地文件中
 					File localFile = new File(localpath + file.getName());  
 					OutputStream is = new FileOutputStream(localFile);  
 					ftpClient.retrieveFile(file.getName(), is);  
