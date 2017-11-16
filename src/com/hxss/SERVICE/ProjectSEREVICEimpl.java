@@ -79,7 +79,11 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 			//判断齐套点
 			if(String.valueOf(project.get("taskName")).indexOf("齐套")!=-1){
 				pro_obj.setIs_fk("齐套");
-				pro_obj.setFk_type("单元层次");
+				if(String.valueOf(project.get("taskName")).indexOf("项目齐套")!=-1) {
+					pro_obj.setFk_type("项目层次");
+				}else {
+					pro_obj.setFk_type("单元层次");
+				}
 				pro_obj.setTask_type("任务作业");
 				pro_obj.setTask_period("0");
 				if(null!=project.get("manager")||project.get("manager")!=""){
@@ -533,7 +537,7 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 	}
 
 	@Override
-	//主要验证逻辑关系（FS）
+	//验证逻辑关系（FS）、齐套任务不允许有前置
 	public String Data_validation(File file,String plan_version_sid)  {
 		// TODO Auto-generated method stub
 		String result="success";
@@ -541,14 +545,18 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 		boolean default_version= projectDAO.getdefault_plan(plan_version_sid);
 		project_importDemo project_importDemo=new project_importDemo();
 		List<Task>tasks=project_importDemo.getprojectfile(file).getAllTasks();
-		for(int i=0;i<tasks.size();i++) {
+		for(int i=tasks.size()-1;i>=0;i--) {
 			Task task=tasks.get(i);
 			List<Relation> relations= task.getPredecessors();
 			if(null!=relations) {
 				for(int j=0;j<relations.size();j++) {
 					Relation relation=relations.get(j);
 					if(!relation.getType().equals(RelationType.FINISH_START)) {
-						result="逻辑关系包含非FS关系";
+						result="检测到["+task.getID()+"]"+task.getName()+" 逻辑关系包含非FS关系";
+						break;
+					}
+					if(task.getName().indexOf("齐套")!=-1) {
+						result="检测到齐套任务["+task.getID()+"]"+task.getName()+"包含前置逻辑关系";
 					}
 				}
 			}

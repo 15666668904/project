@@ -345,7 +345,7 @@ public class ProjectDAOimpl implements ProjectDAO {
 		SQLQuery sqlQuery=session.createSQLQuery("select cast(default_version as varchar(10)) as default_version "
 				+ "from en_plan_version_cj where plan_version_sid='"+plan_version_sid+"'");
 		String default_version=(String) sqlQuery.list().get(0);
-		if(null!=default_version&&default_version=="0") {
+		if(null==default_version||default_version.equals("0")) {
 			return true;
 		}
 		return false;

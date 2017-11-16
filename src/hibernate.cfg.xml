@@ -16,7 +16,7 @@
 		<property name="hibernate.c3p0.idle_test_period">3000</property>
 		<property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
 		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="connection.url">jdbc:sqlserver://172.16.11.63:1433;databaseName=hxss_toc</property>
+		<property name="connection.url">jdbc:sqlserver://172.16.11.65:1433;databaseName=hxss_toc</property>
 		<property name="connection.username">sa</property>
 		<property name="connection.password">hs-info.com123456</property>
 		<!-- 配置hibernate的基本信息 -->
