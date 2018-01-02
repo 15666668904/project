@@ -7,22 +7,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript">
 	function dataFlag() {
-		if(!document.getElementById("projectFile").value){
+		if (!document.getElementById("projectFile").value) {
 			alert("请选择project文件!");
 			return false;
 		}
-		return confirm("将清空现有数据，确认？");
+		if (confirm("将清空现有数据，确认？")) {
+			document.getElementById("fileform").style.display = "none";
+			document.getElementById("waitImg").style.display = "";
+			return true;
+		}
+		return false;
 	}
 </script>
 <title>请选择project文件</title>
 </head>
 <body>
-	<form style="margin-top: 10%; margin-left: 30%;" action="fileupload"
-		onsubmit="return dataFlag();" method="post"
+	<div id="waitImg" style="display: none;">
+		<center>
+			载入中...请稍候
+			<div>
+				<img src="image/waiting.gif" alt="" />
+			</div>
+		</center>
+	</div>
+	<form id="fileform" style="margin-top: 10%; margin-left: 30%;"
+		action="fileupload" onsubmit="return dataFlag();" method="post"
 		enctype="multipart/form-data">
 		<div style="display: inline;">
-			请选择project文件：<input style="height: 25px;" name="projectFile" id="projectFile"
-				type="file" accept=".mpp"></input> &nbsp;&nbsp;&nbsp;
+			请选择project文件：<input style="height: 25px;" name="projectFile"
+				id="projectFile" type="file" accept=".mpp"></input>
+			&nbsp;&nbsp;&nbsp;
 			<button style="height: 25px; width: 70px;" type="submit">确认</button>
 			<!-- 参数begin -->
 			<input type="hidden" name="plan_version_sid"
@@ -31,7 +45,8 @@
 				name="calendar_flag" value="${ calendar_flag}" /> <input
 				type="hidden" name="dept_sid" value="${dept_sid }" /> <input
 				type="hidden" name="Range" value="${Range }" /> <input
-				name="project_date_flag" type="hidden" value="${project_date_flag }" id="project_date_flag" />
+				name="project_date_flag" type="hidden" value="${project_date_flag }"
+				id="project_date_flag" />
 			<!-- 参数end -->
 		</div>
 	</form>
