@@ -547,6 +547,10 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 		List<Task>tasks=project_importDemo.getprojectfile(file).getAllTasks();
 		for(int i=tasks.size()-1;i>=0;i--) {
 			Task task=tasks.get(i);
+			if(null==task.getSuccessors()&&task.getName().indexOf("齐套")!=-1) {
+				result="检测到齐套任务["+task.getID()+"]"+task.getName()+"没有后续任务";
+				break;
+			}
 			List<Relation> relations= task.getPredecessors();
 			if(null!=relations) {
 				for(int j=0;j<relations.size();j++) {
@@ -557,6 +561,7 @@ public class ProjectSEREVICEimpl implements ProjectSERVICE{
 					}
 					if(task.getName().indexOf("齐套")!=-1) {
 						result="检测到齐套任务["+task.getID()+"]"+task.getName()+"包含前置逻辑关系";
+						break;
 					}
 				}
 			}

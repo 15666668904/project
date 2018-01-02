@@ -121,4 +121,24 @@ public class project_importDemo {
 		}
 		return notes;
 	}
+	public static void main(String[] args) {
+		try {
+			ProjectFile projectFile=new MPPReader().read(new File("C:\\Users\\单振龙\\Desktop\\项目1.mpp"));
+			List<Task>tasks= projectFile.getAllTasks();
+			for(int i=0;i<tasks.size();i++) {
+				System.out.println("----------"+tasks.get(i).getName()+"--------");
+				if(null==tasks.get(i).getPredecessors()) {
+					continue;
+				}
+				for(int j=0;j<tasks.get(i).getPredecessors().size();j++) {
+					System.out.println("-------------前置"+(j+1)+"---------------");
+					System.out.println(tasks.get(i).getPredecessors().get(j).getTargetTask().getName());
+					System.out.println("--------------------------------------\n\n");
+				}
+			}
+		} catch (MPXJException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

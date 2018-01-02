@@ -11,6 +11,8 @@
 			<result name="error">error.html</result>
 			<result name="Data_validation_error">Data_validation_error.jsp</result>
 		</action>
+		<action name="debug" class="com.hxss.ACTION.project_ACTION" method="project_debug">
+		</action>
 		<action name="project_temp" class="com.hxss.ACTION.Project_temp_Action"
 			method="project_IMPORT">
 			<result name="success">success.html</result>

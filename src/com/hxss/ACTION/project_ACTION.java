@@ -83,8 +83,7 @@ public class project_ACTION extends ActionSupport{
 			File file=new File(localpath+"/"+file_name);
 			String Data_validation_results=projectSERVICE.Data_validation(file,plan_version_sid);
 			if(!Data_validation_results.equals("success")) {
-				ServletActionContext.getRequest()
-				.setAttribute("Data_validation_results", Data_validation_results);
+				ServletActionContext.getRequest().setAttribute("Data_validation_results", Data_validation_results);
 				return "Data_validation_error";
 			}
 			projectSERVICE.deletepro_obj(plan_version_sid);
@@ -114,4 +113,30 @@ public class project_ACTION extends ActionSupport{
 		}
 
 	}
+	
+	public String project_debug() {
+		ProjectSERVICE projectSERVICE=new ProjectSEREVICEimpl();
+		File file=new File("D://万泰特钢2#仓库施工计划_v1.1_20171103.mpp");
+		String Data_validation_results=projectSERVICE.Data_validation(file,plan_version_sid);
+		if(!Data_validation_results.equals("success")) {
+			ServletActionContext.getRequest().setAttribute("Data_validation_results", Data_validation_results);
+			return "Data_validation_error";
+		}
+		projectSERVICE.deletepro_obj(plan_version_sid);
+		projectSERVICE.savepro_obj(file, plan_version_sid,dept_sid,Range);
+		projectSERVICE.savepro_taskpred(file, plan_version_sid);
+		projectSERVICE.saveEN_RESOURCES(file, xpmobs_sid);
+		projectSERVICE.savehxss_task_resources(file, plan_version_sid,xpmobs_sid);
+		//projectSERVICE.savefk_list(file, plan_version_sid);
+		if (calendar_flag.equals("1")){
+			projectSERVICE.deletecalendar(xpmobs_sid);
+			projectSERVICE.saveEN_PLAN_CALENDAR(xpmobs_sid, file);
+			projectSERVICE.saveresources_CALENDAR(file, xpmobs_sid);
+		}
+		if(project_date_flag.equals("1")) {
+			projectSERVICE.Update_project_delivery(file, xpmobs_sid);
+		}
+		return SUCCESS;
+	}
+	
 }
