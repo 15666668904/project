@@ -11,11 +11,22 @@
 			<result name="error">error.html</result>
 			<result name="Data_validation_error">Data_validation_error.jsp</result>
 		</action>
-		<action name="debug" class="com.hxss.ACTION.project_ACTION" method="project_debug">
+		<action name="debug" class="com.hxss.ACTION.project_ACTION"
+			method="project_debug">
 		</action>
 		<action name="project_temp" class="com.hxss.ACTION.Project_temp_Action"
 			method="project_IMPORT">
 			<result name="success">success.html</result>
+			<result name="error">error.html</result>
+		</action>
+		<!-- 2018-01-02修改文件上传逻辑，简化代码 -->
+		<action name="fileupload" class="com.hxss.ACTION.project_ACTION"
+			method="fileupload">
+			<result name="success">success.html</result>
+		</action>
+		<action name="project_import" class="com.hxss.ACTION.project_ACTION"
+			method="actionChain">
+			<result name="success">fileupload.jsp</result>
 			<result name="error">error.html</result>
 		</action>
 	</package>

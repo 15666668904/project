@@ -1,14 +1,21 @@
 package com.hxss.ACTION;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Properties;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 
 import com.hxss.SERVICE.ProjectSEREVICEimpl;
 import com.hxss.SERVICE.ProjectSERVICE;
 import com.hxss.UTIL.HibernateUtil;
 import com.opensymphony.xwork2.ActionSupport;
+
+import net.sf.mpxj.MPXJException;
+@SuppressWarnings("serial")
 public class project_ACTION extends ActionSupport{
 	String prop_path = Thread.currentThread().getContextClassLoader().getResource("ftp.properties").getPath();
 	Properties properties=new Properties();
@@ -19,6 +26,13 @@ public class project_ACTION extends ActionSupport{
 	private String dept_sid;
 	private String Range="1";//联系人搜索范围，默认在本公司查找 2位在xpm_human表内搜索，不分公司
 	private String project_date_flag;
+	private File projectFile;
+	public File getProjectFile() {
+		return projectFile;
+	}
+	public void setProjectFile(File projectFile) {
+		this.projectFile = projectFile;
+	}
 	public String getProject_date_flag() {
 		return project_date_flag;
 	}
@@ -113,7 +127,7 @@ public class project_ACTION extends ActionSupport{
 		}
 
 	}
-	
+
 	public String project_debug() {
 		ProjectSERVICE projectSERVICE=new ProjectSEREVICEimpl();
 		File file=new File("D://万泰特钢2#仓库施工计划_v1.1_20171103.mpp");
@@ -138,5 +152,61 @@ public class project_ACTION extends ActionSupport{
 		}
 		return SUCCESS;
 	}
-	
+
+
+	public String fileupload() {
+		long start = System.currentTimeMillis();
+		System.out.println("开始上传文件");
+		MultiPartRequestWrapper pa=(MultiPartRequestWrapper) ServletActionContext.getRequest();
+		File[]files= pa.getFiles("projectFile");
+		File file=files[0];
+		ProjectSERVICE projectSERVICE=new ProjectSEREVICEimpl();
+
+
+		try {
+			String Data_validation_results=projectSERVICE.Data_validation(file,plan_version_sid);
+			if(!Data_validation_results.equals("success")) {
+				ServletActionContext.getRequest().setAttribute("Data_validation_results", Data_validation_results);
+				return "Data_validation_error";
+			}
+			projectSERVICE.deletepro_obj(plan_version_sid);
+			projectSERVICE.savepro_obj(file, plan_version_sid,dept_sid,Range);
+			projectSERVICE.savepro_taskpred(file, plan_version_sid);
+			projectSERVICE.saveEN_RESOURCES(file, xpmobs_sid);
+			projectSERVICE.savehxss_task_resources(file, plan_version_sid,xpmobs_sid);
+			//projectSERVICE.savefk_list(file, plan_version_sid);
+			if (calendar_flag.equals("1")){
+				System.out.println("更新日历");
+				projectSERVICE.deletecalendar(xpmobs_sid);
+				projectSERVICE.saveEN_PLAN_CALENDAR(xpmobs_sid, file);
+				projectSERVICE.saveresources_CALENDAR(file, xpmobs_sid);
+			}
+			if(project_date_flag.equals("1")) {
+				System.out.println("更新项目交期");
+				projectSERVICE.Update_project_delivery(file, xpmobs_sid);
+			}
+			return SUCCESS;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+		finally {
+			HibernateUtil.closeSession();
+			long end = System.currentTimeMillis();
+			System.out.println("耗时  "+(end-start)+"毫秒");
+		}
+	}
+
+
+	public String actionChain() {
+		HttpServletRequest request= ServletActionContext.getRequest();
+		request.setAttribute("plan_version_sid", plan_version_sid);
+		request.setAttribute("xpmobs_sid", xpmobs_sid);
+		request.setAttribute("calendar_flag", calendar_flag);
+		request.setAttribute("dept_sid", dept_sid);
+		request.setAttribute("Range", Range);
+		request.setAttribute("project_date_flag", project_date_flag);
+		return SUCCESS;
+	}
+
 }

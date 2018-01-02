@@ -51,7 +51,7 @@ public class readFile{
 			ftpClient.connect(server);//连接服务器
 			ftpClient.login(username, password);//登录服务器
 			//以下判断是否登录成功
-			reply=ftpClient.getReplyCode();//?
+			reply=ftpClient.getReplyCode();
 			if(!FTPReply.isPositiveCompletion(reply)){
 				ftpClient.disconnect();
 			}
@@ -126,4 +126,12 @@ public class readFile{
 			}
 		}
 	}
+
+
+	public File getFile() {
+		File file=new File("");
+		return file;
+	}
+
+
 }
