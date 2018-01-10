@@ -128,10 +128,5 @@ public class readFile{
 	}
 
 
-	public File getFile() {
-		File file=new File("");
-		return file;
-	}
-
 
 }

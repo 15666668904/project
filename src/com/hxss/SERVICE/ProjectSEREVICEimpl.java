@@ -58,6 +58,7 @@ import net.sf.mpxj.planner.schema.Days;
 public class ProjectSEREVICEimpl implements ProjectSERVICE{
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	@SuppressWarnings({ "static-access", "rawtypes" })
 	@Override
 	public void savepro_obj(File file,String plan_version_sid,String dept_sid,String Range)  {
 		// TODO Auto-generated method stub
